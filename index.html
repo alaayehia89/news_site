@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="login-card">
+        <aside class="brand-panel">
+          <div class="brand-content">
+            <div class="brand-badge" data-site-logo>A</div>
+            <h1>Welcome back</h1>
+            <p>
+              Manage your projects, conversations, and daily tasks in one place.
+            </p>
+            <ul class="feature-list">
+              <li>Secure access</li>
+              <li>Fast workflow</li>
+              <li>Team collaboration</li>
+            </ul>
+          </div>
+        </aside>
+
+        <main class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow" id="formEyebrow">Account Login</span>
+            <h2 id="formTitle">Sign in</h2>
+          </div>
+
+          <form id="authForm" novalidate>
+            <div class="input-group hidden" id="nameGroup">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" placeholder="Your full name" />
+              <small class="error-message" id="nameError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" />
+              <small class="error-message" id="emailError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="password">Password</label>
+              <div class="password-wrap">
+                <input id="password" name="password" type="password" placeholder="Enter your password" />
+                <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+              </div>
+              <small class="error-message" id="passwordError"></small>
+            </div>
+
+            <div class="row between">
+              <label class="checkbox-wrap">
+                <input type="checkbox" id="remember" />
+                <span>Remember me</span>
+              </label>
+              <a href="#" class="link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="primary-btn" id="submitBtn">Sign In</button>
+
+            <div class="divider"><span>or continue with</span></div>
+
+            <div class="social-row">
+              <button type="button" class="social-btn">Google</button>
+              <button type="button" class="social-btn">GitHub</button>
+            </div>
+          </form>
+
+          <p class="signup-text">
+            <span id="switchText">Don’t have an account?</span>
+            <a href="signup.html" class="link" id="switchMode">Create one</a>
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

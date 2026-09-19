@@ -1,0 +1,28 @@
+{
+  "siteName": "الخبر",
+  "tagline": "تغطية مستمرة للأحداث المحلية والإقليمية والعالمية",
+  "logoUrl": "",
+  "faviconUrl": "",
+  "primaryColor": "#1d4ed8",
+  "accentColor": "#dc2626",
+  "backgroundColor": "#f4f7fb",
+  "textColor": "#0f172a",
+  "heroBadge": "أحدث الأخبار",
+  "heroTitle": "تغطية مستمرة للأحداث المحلية والإقليمية والعالمية",
+  "heroDescription": "متابعة دقيقة للسياسة والاقتصاد والرياضة والثقافة مع تقارير وتحليلات صحفية متجددة.",
+  "heroPrimaryAction": "اقرأ الأخبار",
+  "heroSecondaryAction": "لوحة التحرير",
+  "showBreaking": true,
+  "showLatestAnalysis": true,
+  "showFilters": true,
+  "sectionLabels": {
+    "breaking": "عاجل",
+    "politics": "سياسة",
+    "economy": "اقتصاد",
+    "sports": "رياضة",
+    "technology": "تكنولوجيا",
+    "culture": "ثقافة",
+    "opinion": "الرأي",
+    "analysis": "التحليلات"
+  }
+}

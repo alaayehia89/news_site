@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>التحليلات</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="news-body analytics-body">
+    <header class="news-header">
+      <div class="container nav-wrap">
+        <div class="brand"><span data-site-name>أخبار اليوم</span></div>
+        <nav class="main-nav">
+          <a href="news-home.html">الرئيسية</a>
+          <a href="analytics.html">التحليلات</a>
+          <a href="dashboard.html">لوحة التحكم</a>
+        </nav>
+        <div class="nav-actions">
+          <form class="header-search" action="search.html" method="get">
+            <input name="q" type="search" placeholder="بحث" aria-label="بحث" />
+            <button type="submit" aria-label="تنفيذ البحث">بحث</button>
+          </form>
+          <a href="index.html" class="btn btn-light">تسجيل الدخول</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container analytics-page">
+      <section class="analytics-grid">
+        <article class="analytics-card">
+          <h3>أكثر الموضوعات</h3>
+          <ul id="topCategories"></ul>
+        </article>
+
+        <article class="analytics-card">
+          <h3>أكثر المناطق</h3>
+          <ul id="topRegions"></ul>
+        </article>
+
+        <article class="analytics-card wide-card">
+          <h3>الكلمات المفتاحية</h3>
+          <div id="keywordCloud" class="keyword-cloud"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="site-config.js"></script>
+    <script src="analytics.js"></script>
+  </body>
+</html>

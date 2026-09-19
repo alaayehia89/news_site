@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تفاصيل المقال</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="news-body article-detail-body">
+    <header class="news-header">
+      <div class="container nav-wrap">
+        <div class="brand"><span data-site-name>أخبار اليوم</span></div>
+        <nav class="main-nav">
+          <a href="news-home.html">الرئيسية</a>
+          <a href="#">سياسة</a>
+          <a href="#">اقتصاد</a>
+          <a href="#">رياضة</a>
+          <a href="#">تحليلات</a>
+        </nav>
+        <div class="nav-actions">
+          <form class="header-search" action="search.html" method="get">
+            <input name="q" type="search" placeholder="بحث" aria-label="بحث" />
+            <button type="submit" aria-label="تنفيذ البحث">بحث</button>
+          </form>
+          <a href="index.html" class="btn btn-light">تسجيل الدخول</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container article-detail-container">
+      <article class="article-detail-card">
+        <img id="detailImage" src="" alt="article" />
+        <div class="article-detail-content">
+          <div class="detail-meta" id="detailMeta"></div>
+          <h1 id="detailTitle"></h1>
+          <p class="detail-summary" id="detailSummary"></p>
+          <div class="detail-author" id="detailAuthor"></div>
+          <div class="article-body" id="detailBody"></div>
+        </div>
+      </article>
+    </main>
+
+    <script src="site-config.js"></script>
+    <script src="article-detail.js"></script>
+  </body>
+</html>

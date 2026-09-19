@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand" data-site-logo>A</div>
+        <nav class="sidebar-nav">
+          <a class="nav-item active" href="#">نظرة عامة</a>
+          <a class="nav-item" href="#article-management">الأخبار والمقالات</a>
+          <a class="nav-item" href="#">التقارير</a>
+          <a class="nav-item" href="#">المنطقة</a>
+          <a class="nav-item" href="site-settings.html">إعدادات الموقع</a>
+        </nav>
+        <button class="logout-btn" id="logoutBtn">تسجيل الخروج</button>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="topbar">
+          <div>
+            <p class="topbar-label">لوحة التحكم</p>
+            <h1 id="welcomeName">مرحباً</h1>
+          </div>
+          <a href="news-home.html" class="primary-btn small-btn">+ عرض الموقع</a>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <span>إجمالي المقالات</span>
+            <strong id="totalArticles">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>التغطية</span>
+            <strong>12 منطقة</strong>
+          </article>
+          <article class="stat-card">
+            <span>المواضيع</span>
+            <strong>5 فئات</strong>
+          </article>
+          <article class="stat-card">
+            <span>المستخدمين</span>
+            <strong id="totalUsers">1</strong>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>إضافة خبر أو مقال جديد</h3>
+            </div>
+
+            <form id="articleForm" class="dashboard-article-form">
+              <input id="articleTitle" type="text" placeholder="عنوان الخبر أو المقال" required />
+              <input id="articleAuthor" type="text" placeholder="اسم الكاتب" />
+              <input id="articleImage" type="url" placeholder="رابط صورة الخبر" />
+              <input id="articleDate" type="date" placeholder="تاريخ النشر" />
+
+              <select id="articleType">
+                <option value="خبر">خبر</option>
+                <option value="تحليل">تحليل</option>
+                <option value="مقال">مقال</option>
+                <option value="تقرير">تقرير</option>
+              </select>
+
+              <select id="articleStatus">
+                <option value="Published">منشور عادي</option>
+                <option value="Breaking">عاجل</option>
+              </select>
+
+              <select id="articleCategory"></select>
+              <select id="articleRegion"></select>
+              <label class="keyword-field">
+                الكلمات المفتاحية للخبر أو المقال
+                <input id="articleKeywords" type="text" placeholder="سياسة، اقتصاد، عاجل" />
+              </label>
+              <textarea id="articleSummary" placeholder="ملخص الخبر" required></textarea>
+              <textarea id="articleContent" placeholder="نص الخبر الكامل" required></textarea>
+
+              <button id="saveArticleBtn" type="submit" class="primary-btn">نشر الخبر</button>
+              <button id="cancelArticleEditBtn" type="button" class="secondary-btn hidden">إلغاء تعديل المقال</button>
+              <p id="articleFormStatus" class="form-status" aria-live="polite"></p>
+            </form>
+          </article>
+
+          <article class="panel breaking-management-panel">
+            <div class="panel-header">
+              <p class="topbar-label">غرفة الأخبار</p>
+              <h3>إدارة عناوين العواجل</h3>
+            </div>
+            <form id="breakingHeadlineForm" class="breaking-headline-form">
+              <input id="breakingHeadlineTitle" type="text" placeholder="اكتب عنوان العاجل" maxlength="240" required />
+              <label class="keyword-field">
+                الكلمات المفتاحية للعاجل
+                <input id="breakingHeadlineKeywords" type="text" placeholder="سياسة، عاجل" />
+              </label>
+              <button id="saveBreakingHeadlineBtn" type="submit" class="primary-btn">إضافة العاجل</button>
+              <button id="cancelBreakingEditBtn" type="button" class="secondary-btn hidden">إلغاء التعديل</button>
+            </form>
+            <div class="breaking-json-import">
+              <input id="breakingJsonFile" type="file" accept="application/json,.json" />
+              <button id="importBreakingJsonBtn" type="button" class="secondary-btn">استيراد عواجل JSON</button>
+            </div>
+            <p id="breakingHeadlineStatus" class="form-status" aria-live="polite"></p>
+            <div id="breakingHeadlineList" class="breaking-headline-admin-list"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>إضافة التصنيفات والمناطق</h3>
+            </div>
+
+            <div class="management-block json-import-block">
+              <h4>استيراد أخبار من ملف JSON</h4>
+              <input id="articlesJsonFile" type="file" accept="application/json,.json" />
+              <button type="button" id="importJsonBtn" class="secondary-btn">إدخال الأخبار إلى قاعدة البيانات</button>
+              <p id="importStatus" class="form-status" aria-live="polite"></p>
+            </div>
+
+            <div class="management-block">
+              <div class="mini-form">
+                <h4>إضافة تصنيف</h4>
+                <input id="newCategory" type="text" placeholder="اسم التصنيف" />
+                <button type="button" id="addCategoryBtn" class="secondary-btn">إضافة</button>
+              </div>
+              <ul id="categoryList" class="tag-list"></ul>
+            </div>
+
+            <div class="management-block">
+              <div class="mini-form">
+                <h4>إضافة منطقة</h4>
+                <input id="newRegion" type="text" placeholder="اسم المنطقة" />
+                <button type="button" id="addRegionBtn" class="secondary-btn">إضافة</button>
+              </div>
+              <ul id="regionList" class="tag-list"></ul>
+            </div>
+          </article>
+        </section>
+
+        <section id="article-management" class="panel article-management-panel">
+          <div class="panel-header article-management-header">
+            <div>
+              <p class="topbar-label">إدارة المحتوى</p>
+              <h3>الأخبار والمقالات حسب الأقسام</h3>
+            </div>
+            <select id="articleSectionFilter" class="article-section-filter">
+              <option value="all">كل الأقسام</option>
+            </select>
+          </div>
+          <div id="articleManagementList" class="article-management-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="dashboard.js"></script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قسم الأخبار</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="news-body section-page-body">
+    <header class="news-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="news-home.html"><span data-site-name>أخبار اليوم</span></a>
+        <nav class="main-nav">
+          <a data-section-key="breaking" href="section.html?section=breaking">العواجل</a>
+          <a data-section-key="politics" href="section.html?section=politics">سياسة</a>
+          <a data-section-key="economy" href="section.html?section=economy">اقتصاد</a>
+          <a data-section-key="sports" href="section.html?section=sports">رياضة</a>
+          <a data-section-key="technology" href="section.html?section=technology">تقنية</a>
+          <a data-section-key="opinion" href="section.html?section=opinion">الرأي</a>
+          <a data-section-key="analysis" href="section.html?section=analysis">التحليلات</a>
+          <a href="search.html">بحث متقدم</a>
+        </nav>
+        <div class="nav-actions">
+          <form class="header-search" action="search.html" method="get">
+            <input name="q" type="search" placeholder="بحث" aria-label="بحث" />
+            <button type="submit" aria-label="تنفيذ البحث">بحث</button>
+          </form>
+          <a href="index.html" class="btn btn-light">تسجيل الدخول</a>
+          <a href="signup.html" class="btn btn-primary">إنشاء حساب</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container section-page-main">
+      <header class="section-page-heading">
+        <span id="sectionBadge" class="badge">قسم الأخبار</span>
+        <h1 id="sectionTitle">الأخبار</h1>
+        <p id="sectionDescription"></p>
+      </header>
+      <section id="sectionArticles" class="news-grid"></section>
+    </main>
+
+    <script src="site-config.js"></script>
+    <script src="section.js"></script>
+  </body>
+</html>

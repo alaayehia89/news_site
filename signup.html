@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="login-card">
+        <aside class="brand-panel">
+          <div class="brand-content">
+            <div class="brand-badge" data-site-logo>A</div>
+            <h1>Create account</h1>
+            <p>
+              Start managing your work, invoices, and team projects from one secure dashboard.
+            </p>
+            <ul class="feature-list">
+              <li>Instant onboarding</li>
+              <li>Smart workspace</li>
+              <li>Safe account access</li>
+            </ul>
+          </div>
+        </aside>
+
+        <main class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow">Create account</span>
+            <h2>Sign up</h2>
+          </div>
+
+          <form id="signupForm" novalidate>
+            <div class="input-group">
+              <label for="name">Full name</label>
+              <input id="name" name="name" type="text" placeholder="Your full name" />
+              <small class="error-message" id="nameError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" />
+              <small class="error-message" id="emailError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="password">Password</label>
+              <div class="password-wrap">
+                <input id="password" name="password" type="password" placeholder="Create a password" />
+                <button type="button" class="toggle-password" aria-label="Show password">Show</button>
+              </div>
+              <small class="error-message" id="passwordError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="confirmPassword">Confirm password</label>
+              <div class="password-wrap">
+                <input id="confirmPassword" name="confirmPassword" type="password" placeholder="Repeat your password" />
+              </div>
+              <small class="error-message" id="confirmPasswordError"></small>
+            </div>
+
+            <button type="submit" class="primary-btn" id="signupBtn">Create Account</button>
+          </form>
+
+          <p class="signup-text">
+            Already have an account?
+            <a href="index.html" class="link">Sign in</a>
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="signup.js"></script>
+  </body>
+</html>

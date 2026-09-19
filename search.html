@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>البحث | أخبار اليوم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="news-body search-page-body">
+    <header class="news-header">
+      <div class="container nav-wrap">
+        <a class="brand" href="news-home.html"><span data-site-name>أخبار اليوم</span></a>
+        <nav class="main-nav">
+          <a href="news-home.html">الرئيسية</a>
+          <a href="section.html?section=breaking">العواجل</a>
+          <a href="section.html?section=politics">سياسة</a>
+          <a href="section.html?section=economy">اقتصاد</a>
+          <a href="section.html?section=sports">رياضة</a>
+          <a href="section.html?section=analysis">التحليلات</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container search-page-main">
+      <header class="section-page-heading">
+        <span class="badge">بحث متقدم</span>
+        <h1>ابحث في الأخبار والتحليلات</h1>
+        <p>ابحث في العنوان والملخص والمحتوى والكاتب والتصنيف والمنطقة والكلمات المفتاحية.</p>
+      </header>
+
+      <form id="searchForm" class="advanced-search-form">
+        <div class="search-query-row">
+          <input id="searchQuery" type="search" placeholder="اكتب موضوعاً أو اسماً أو منطقة..." autocomplete="off" />
+          <button class="btn btn-primary" type="submit">بحث</button>
+        </div>
+        <div class="search-filters">
+          <select id="searchCategory">
+            <option value="all">كل الأقسام</option>
+            <option value="سياسة">سياسة</option>
+            <option value="اقتصاد">اقتصاد</option>
+            <option value="رياضة">رياضة</option>
+            <option value="تقنية">تقنية</option>
+            <option value="ثقافة">ثقافة</option>
+          </select>
+          <select id="searchType">
+            <option value="all">كل الأنواع</option>
+            <option value="خبر">خبر</option>
+            <option value="تحليل">تحليل</option>
+            <option value="مقال">مقال رأي</option>
+            <option value="تقرير">تقرير</option>
+          </select>
+          <select id="searchRegion">
+            <option value="all">كل المناطق</option>
+            <option value="السعودية">السعودية</option>
+            <option value="مصر">مصر</option>
+            <option value="الشرق الأوسط">الشرق الأوسط</option>
+            <option value="العالم العربي">العالم العربي</option>
+            <option value="العالم">العالم</option>
+          </select>
+          <input id="searchFromDate" type="date" aria-label="من تاريخ" />
+          <input id="searchToDate" type="date" aria-label="إلى تاريخ" />
+          <select id="searchSort">
+            <option value="relevance">الأكثر صلة</option>
+            <option value="date">الأحدث أولاً</option>
+          </select>
+        </div>
+      </form>
+
+      <div class="search-results-header">
+        <p id="searchSummary">أدخل عبارة للبحث.</p>
+      </div>
+      <section id="searchResults" class="news-grid"></section>
+      <nav id="searchPagination" class="search-pagination" aria-label="صفحات النتائج"></nav>
+    </main>
+
+    <script src="site-config.js"></script>
+    <script src="search.js"></script>
+  </body>
+</html>

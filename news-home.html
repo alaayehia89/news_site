@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أخبار اليوم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="news-body">
+    <header class="news-header">
+      <div class="container nav-wrap">
+        <div class="brand"><span data-site-name>أخبار اليوم</span></div>
+        <nav class="main-nav">
+          <a href="#">الرئيسية</a>
+          <a data-section-key="breaking" href="section.html?section=breaking">العواجل</a>
+          <a data-section-key="politics" href="section.html?section=politics">سياسة</a>
+          <a data-section-key="economy" href="section.html?section=economy">اقتصاد</a>
+          <a data-section-key="sports" href="section.html?section=sports">رياضة</a>
+          <a data-section-key="technology" href="section.html?section=technology">تقنية</a>
+          <a data-section-key="opinion" href="section.html?section=opinion">الرأي</a>
+          <a data-section-key="analysis" href="section.html?section=analysis">التحليلات</a>
+          <a href="search.html">بحث متقدم</a>
+        </nav>
+        <div class="nav-actions">
+          <form class="header-search" action="search.html" method="get">
+            <input name="q" type="search" placeholder="بحث" aria-label="بحث" />
+            <button type="submit" aria-label="تنفيذ البحث">بحث</button>
+          </form>
+          <a href="index.html" class="btn btn-light">تسجيل الدخول</a>
+          <a href="signup.html" class="btn btn-primary">إنشاء حساب</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="top-content-layout">
+        <aside class="breaking-sidebar breaking-topbar" data-site-visibility="showBreaking" aria-label="العواجل">
+        <div class="breaking-sidebar-header">
+          <div>
+            <span class="breaking-kicker">متابعة مباشرة</span>
+            <h2>العواجل</h2>
+          </div>
+          <div class="breaking-header-actions">
+            <span class="breaking-live-dot" aria-label="مباشر"></span>
+            <button id="refreshBreakingBtn" class="breaking-refresh-btn" type="button" aria-label="تحديث العواجل">تحديث</button>
+          </div>
+        </div>
+        <div id="breakingList" class="breaking-list">
+          <p class="breaking-empty">جارٍ تحميل العواجل...</p>
+        </div>
+        </aside>
+
+        <section class="hero">
+        <div class="hero-text">
+          <span class="badge" data-site-setting="heroBadge">أحدث الأخبار</span>
+          <h1 data-site-setting="heroTitle">تغطية مستمرة للأحداث المحلية والإقليمية والعالمية</h1>
+          <p data-site-setting="heroDescription" data-site-tagline>متابعة دقيقة للسياسة والاقتصاد والرياضة والثقافة مع تقارير وتحليلات صحفية متجددة.</p>
+          <div class="hero-actions">
+            <a href="#latest-news" class="btn btn-primary" data-site-setting="heroPrimaryAction">اقرأ الأخبار</a>
+            <a href="dashboard.html" class="btn btn-secondary" data-site-setting="heroSecondaryAction">لوحة التحرير</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img src="https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=80" alt="breaking news" />
+          <div class="hero-card-copy">
+            <span>عاجل</span>
+            <h3>التحركات الدبلوماسية تفتح الباب أمام مزيد من الاستقرار الإقليمي</h3>
+          </div>
+        </div>
+        </section>
+
+        <aside class="latest-analysis-panel" data-site-visibility="showLatestAnalysis" aria-label="أحدث تحليل">
+          <div class="latest-analysis-header">
+            <span class="breaking-kicker">قراءة معمقة</span>
+            <h2>أحدث تحليل</h2>
+          </div>
+          <div id="latestAnalysis" class="latest-analysis-content">
+            <p class="analysis-empty">جارٍ تحميل أحدث تحليل...</p>
+          </div>
+        </aside>
+      </div>
+
+      <section class="filters" data-site-visibility="showFilters">
+        <select id="categoryFilter">
+          <option value="all">كل الموضوعات</option>
+          <option value="سياسة">سياسة</option>
+          <option value="اقتصاد">اقتصاد</option>
+          <option value="رياضة">رياضة</option>
+          <option value="تقنية">تقنية</option>
+          <option value="ثقافة">ثقافة</option>
+        </select>
+
+        <select id="regionFilter">
+          <option value="all">كل المناطق</option>
+          <option value="السعودية">السعودية</option>
+          <option value="الإمارات">الإمارات</option>
+          <option value="مصر">مصر</option>
+          <option value="الشرق الأوسط">الشرق الأوسط</option>
+          <option value="العالم العربي">العالم العربي</option>
+          <option value="العالم">العالم</option>
+        </select>
+      </section>
+
+      <section id="latest-news" class="news-grid"></section>
+
+      <section class="analysis-sections">
+        <article id="political-analysis" class="analysis-section">
+          <div class="section-heading">
+            <span class="badge">رأي وتحليل</span>
+            <h2><a href="section.html?section=political-analysis">التحليلات السياسية</a></h2>
+          </div>
+          <div id="political-analysis-list" class="news-grid analysis-grid"></div>
+        </article>
+
+        <article id="economic-analysis" class="analysis-section">
+          <div class="section-heading">
+            <span class="badge">اقتصاد وأسواق</span>
+            <h2><a href="section.html?section=economic-analysis">التحليلات الاقتصادية</a></h2>
+          </div>
+          <div id="economic-analysis-list" class="news-grid analysis-grid"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="site-config.js"></script>
+    <script src="news-home.js"></script>
+  </body>
+</html>
