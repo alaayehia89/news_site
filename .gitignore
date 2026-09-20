@@ -1,4 +1,16 @@
+```
+# Dependencies
 node_modules/
-users.db
-server.log
-data/*.import.json
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+```

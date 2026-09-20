@@ -243,9 +243,26 @@ const db = new sqlite3.Database(DB_PATH, (err) => {
         }
 
         const importPath = path.join(DATA_DIR, ARTICLES_IMPORT_FILE);
-        const initialArticles = fs.existsSync(importPath)
-          ? readJsonFile(ARTICLES_IMPORT_FILE)
-          : readJsonFile('articles.json');
+        let initialArticles = [];
+        if (fs.existsSync(importPath)) {
+          try {
+            initialArticles = readJsonFile(ARTICLES_IMPORT_FILE);
+          } catch (importErr) {
+            console.warn('Failed to read articles.import.json:', importErr.message);
+          }
+        } else if (fs.existsSync(path.join(DATA_DIR, 'articles.json'))) {
+          try {
+            initialArticles = readJsonFile('articles.json');
+          } catch (jsonErr) {
+            console.warn('Failed to read articles.json:', jsonErr.message);
+          }
+        }
+
+        if (initialArticles.length === 0) {
+          console.log('No initial articles found. Starting with empty database.');
+          console.log('Users and articles tables ready.');
+          return;
+        }
 
         importArticlesIntoDatabase(initialArticles, false, (articlesErr) => {
       if (articlesErr) {
@@ -445,16 +462,16 @@ app.post('/api/register', async (req, res) => {
   const { name, email, password } = req.body || {};
 
   if (!name || !email || !password) {
-    return sendError(res, 400, 'Name, email, and password are required.');
+    return sendError(res, 400, 'الاسم والبريد الإلكتروني وكلمة المرور مطلوبة.');
   }
 
   if (password.length < 6) {
-    return sendError(res, 400, 'Password must be at least 6 characters long.');
+    return sendError(res, 400, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailPattern.test(String(email).trim())) {
-    return sendError(res, 400, 'Please enter a valid email address.');
+    return sendError(res, 400, 'يرجى إدخال عنوان بريد إلكتروني صالح.');
   }
 
   const trimmedName = String(name).trim();
@@ -462,7 +479,7 @@ app.post('/api/register', async (req, res) => {
   const passwordHash = await bcrypt.hash(password, 10);
 
   db.get('SELECT COUNT(*) AS total FROM users', (countErr, row) => {
-    if (countErr) return sendError(res, 500, 'Database error while creating account.');
+    if (countErr) return sendError(res, 500, 'خطأ في قاعدة البيانات أثناء إنشاء الحساب.');
     const role = Number(row.total) === 0 ? 'admin' : 'reader';
     db.run(
       'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
@@ -470,14 +487,14 @@ app.post('/api/register', async (req, res) => {
       function insertUser(err) {
       if (err) {
         if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-          return sendError(res, 409, 'This email is already registered.');
+          return sendError(res, 409, 'هذا البريد الإلكتروني مسجل بالفعل.');
         }
-        return sendError(res, 500, 'Database error while creating account.');
+        return sendError(res, 500, 'خطأ في قاعدة البيانات أثناء إنشاء الحساب.');
       }
 
       return res.status(201).json({
         success: true,
-        message: 'User registered successfully.',
+        message: 'تم تسجيل المستخدم بنجاح.',
         user: {
           id: this.lastID,
           name: trimmedName,
@@ -494,23 +511,23 @@ app.post('/api/login', async (req, res) => {
   const { email, password } = req.body || {};
 
   if (!email || !password) {
-    return sendError(res, 400, 'Email and password are required.');
+    return sendError(res, 400, 'البريد الإلكتروني وكلمة المرور مطلوبة.');
   }
 
   const trimmedEmail = String(email).trim().toLowerCase();
 
   db.get('SELECT * FROM users WHERE email = ?', [trimmedEmail], async (err, user) => {
     if (err) {
-      return sendError(res, 500, 'Database error while checking user.');
+      return sendError(res, 500, 'خطأ في قاعدة البيانات أثناء التحقق من المستخدم.');
     }
 
     if (!user) {
-      return sendError(res, 401, 'Invalid email or password.');
+      return sendError(res, 401, 'البريد الإلكتروني أو كلمة المرور غير صحيح.');
     }
 
     const isPasswordValid = await bcrypt.compare(String(password), user.password_hash);
     if (!isPasswordValid) {
-      return sendError(res, 401, 'Invalid email or password.');
+      return sendError(res, 401, 'البريد الإلكتروني أو كلمة المرور غير صحيح.');
     }
 
     createSession(user.id, user.role, (sessionErr, token, expiresAt) => {
@@ -519,7 +536,7 @@ app.post('/api/login', async (req, res) => {
       setSessionCookie(res, token, expiresAt);
       return res.json({
         success: true,
-        message: 'Login successful.',
+        message: 'تم تسجيل الدخول بنجاح.',
         user: {
           id: user.id,
           name: user.name,
@@ -592,7 +609,7 @@ app.get('/api/articles', (req, res) => {
   query += ' ORDER BY date DESC, published_at DESC';
 
   db.all(query, params, (err, rows) => {
-    if (err) return sendError(res, 500, 'Failed to load news articles from SQLite.');
+    if (err) return sendError(res, 500, 'فشل تحميل المقالات الإخبارية من قاعدة البيانات.');
 
     return res.json({
       success: true,
@@ -838,10 +855,10 @@ app.get('/api/search', (req, res) => {
   const breakingQuery = `SELECT id, title, keywords, created_at, updated_at FROM breaking_headlines${breakingConditions.length ? ` WHERE ${breakingConditions.join(' AND ')}` : ''}`;
 
   db.all(dataQuery, [...relevanceParams, ...conditionParams], (err, rows) => {
-    if (err) return sendError(res, 500, 'Failed to search articles in SQLite.');
+    if (err) return sendError(res, 500, 'فشل البحث في المقالات.');
 
     db.all(breakingQuery, breakingParams, (breakingErr, breakingRows) => {
-      if (breakingErr) return sendError(res, 500, 'Failed to search breaking headlines.');
+      if (breakingErr) return sendError(res, 500, 'فشل البحث في العواجل.');
 
       const articleResults = rows.map((row) => ({
         ...row,
@@ -928,11 +945,11 @@ app.post('/api/articles', requireAdmin, (req, res) => {
       new Date().toISOString(),
     ],
     function onInsert(err) {
-      if (err) return sendError(res, 500, 'Failed to save article in SQLite.');
+      if (err) return sendError(res, 500, 'فشل حفظ المقال في قاعدة البيانات.');
 
       return res.status(201).json({
         success: true,
-        message: 'Article saved in SQLite.',
+        message: 'تم حفظ المقال بنجاح.',
         articleId: this.lastID,
       });
     }
@@ -1004,15 +1021,15 @@ app.post('/api/articles/import', requireAdmin, (req, res) => {
   });
 
   if (invalidArticle) {
-    return sendError(res, 400, 'Each imported article needs title, summary, content, type, category, and region.');
+    return sendError(res, 400, 'كل مقال مستورد يجب أن يحتوي على عنوان وملخص ومحتوى ونوع وقسم ومنطقة.');
   }
 
   importArticlesIntoDatabase(importedArticles, false, (err) => {
-    if (err) return sendError(res, 500, 'Failed to import articles into SQLite.');
+    if (err) return sendError(res, 500, 'فشل استيراد المقالات إلى قاعدة البيانات.');
 
     return res.status(201).json({
       success: true,
-      message: `${importedArticles.length} articles imported into SQLite.`,
+      message: `تم استيراد ${importedArticles.length} مقالاً بنجاح.`,
       imported: importedArticles.length,
     });
   });
@@ -1023,21 +1040,21 @@ app.get('/api/categories', (req, res) => {
     const categories = readConfigList('categories.json', DEFAULT_CATEGORIES);
     return res.json({ success: true, categories });
   } catch (error) {
-    return sendError(res, 500, 'Failed to read categories file.');
+    return sendError(res, 500, 'فشل قراءة ملف الأقسام.');
   }
 });
 
 app.post('/api/categories', requireAdmin, (req, res) => {
   const { name } = req.body || {};
   if (!name || !String(name).trim()) {
-    return sendError(res, 400, 'Category name is required.');
+    return sendError(res, 400, 'اسم القسم مطلوب.');
   }
 
   const categories = readConfigList('categories.json', DEFAULT_CATEGORIES);
   const cleanName = String(name).trim();
 
   if (categories.includes(cleanName)) {
-    return sendError(res, 409, 'This category already exists.');
+    return sendError(res, 409, 'هذا القسم موجود بالفعل.');
   }
 
   categories.push(cleanName);
@@ -1050,21 +1067,21 @@ app.get('/api/regions', (req, res) => {
     const regions = readConfigList('regions.json', DEFAULT_REGIONS);
     return res.json({ success: true, regions });
   } catch (error) {
-    return sendError(res, 500, 'Failed to read regions file.');
+    return sendError(res, 500, 'فشل قراءة ملف المناطق.');
   }
 });
 
 app.post('/api/regions', requireAdmin, (req, res) => {
   const { name } = req.body || {};
   if (!name || !String(name).trim()) {
-    return sendError(res, 400, 'Region name is required.');
+    return sendError(res, 400, 'اسم المنطقة مطلوب.');
   }
 
   const regions = readConfigList('regions.json', DEFAULT_REGIONS);
   const cleanName = String(name).trim();
 
   if (regions.includes(cleanName)) {
-    return sendError(res, 409, 'This region already exists.');
+    return sendError(res, 409, 'هذه المنطقة موجودة بالفعل.');
   }
 
   regions.push(cleanName);
