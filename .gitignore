@@ -1,1 +1,90 @@
-Nothing should be ignored based on the provided file changes. The added and modified files are all source code and HTML/CSS files that should be tracked in version control.
+```
+# Dependencies
+node_modules/
+node_modules/**
+.pnpm-store/
+.yarn/
+.yarn-cache/
+
+# Build outputs
+dist/
+build/
+.next/
+.nuxt/
+public/dist/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.*
+!.env.example
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+log/
+
+# Runtime
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Coverage
+coverage/
+.nyc_output/
+.html
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python related (in case of mixed environment)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+*.local.py
+.python-version
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# TypeScript/JavaScript
+*.tsbuildinfo
+*.js.map
+*.jsx.map
+*.ts.map
+*.tsx.map
+
+# Prisma
+prisma/migrations/
+*.db
+*.db-journal
+
+# Next.js
+.next/
+out/
+```
