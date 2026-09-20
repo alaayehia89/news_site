@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة المحرر</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .editor-actions { display: none; }
+      .writer-only { display: none; }
+      .admin-only { display: none; }
+    </style>
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand" data-site-logo>A</div>
+        <nav class="sidebar-nav">
+          <a class="nav-item active" href="#">نظرة عامة</a>
+          <a class="nav-item" href="#article-management">المقالات والمسودات</a>
+          <a class="nav-item admin-only" href="#user-management">إدارة المستخدمين</a>
+          <a class="nav-item admin-only" href="site-settings.html">إعدادات الموقع</a>
+        </nav>
+        <button class="logout-btn" id="logoutBtn">تسجيل الخروج</button>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="topbar">
+          <div>
+            <p class="topbar-label">لوحة التحكم</p>
+            <h1 id="welcomeName">مرحباً</h1>
+            <span id="userRole" class="role-badge"></span>
+          </div>
+          <a href="news-home.html" class="primary-btn small-btn">+ عرض الموقع</a>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <span>مقالاتي</span>
+            <strong id="myArticlesCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>مسوداتي</span>
+            <strong id="myDraftsCount">0</strong>
+          </article>
+          <article class="stat-card writer-only">
+            <span>في الانتظار</span>
+            <strong id="pendingCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>منشورة</span>
+            <strong id="publishedCount">0</strong>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>كتابة مقال جديد</h3>
+            </div>
+
+            <form id="articleForm" class="dashboard-article-form">
+              <input id="articleTitle" type="text" placeholder="عنوان المقال" required />
+              <input id="articleAuthor" type="text" placeholder="اسم الكاتب" />
+              <input id="articleImage" type="url" placeholder="رابط صورة المقال" />
+              <input id="articleDate" type="date" placeholder="تاريخ النشر" />
+
+              <select id="articleType">
+                <option value="خبر">خبر</option>
+                <option value="تحليل">تحليل</option>
+                <option value="مقال">مقال</option>
+                <option value="تقرير">تقرير</option>
+              </select>
+
+              <select id="articleStatus">
+                <option value="Draft">مسودة</option>
+                <option value="Pending">لل مراجعة</option>
+                <option value="Published" class="editor-only">منشور</option>
+              </select>
+
+              <select id="articleCategory"></select>
+              <select id="articleRegion"></select>
+              <label class="keyword-field">
+                الكلمات المفتاحية
+                <input id="articleKeywords" type="text" placeholder="سياسة، اقتصاد" />
+              </label>
+              <textarea id="articleSummary" placeholder="ملخص المقال" required></textarea>
+              <textarea id="articleContent" placeholder="نص المقال الكامل" required></textarea>
+
+              <button id="saveArticleBtn" type="submit" class="primary-btn">حفظ المقال</button>
+              <button id="cancelArticleEditBtn" type="button" class="secondary-btn hidden">إلغاء التعديل</button>
+              <p id="articleFormStatus" class="form-status" aria-live="polite"></p>
+            </form>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>مقالاتي الأخيرة</h3>
+            </div>
+            <div id="myArticlesList" class="article-list"></div>
+          </article>
+        </section>
+
+        <section id="article-management" class="panel article-management-panel">
+          <div class="panel-header article-management-header">
+            <div>
+              <p class="topbar-label">إدارة المحتوى</p>
+              <h3>جميع المقالات حسب الحالة</h3>
+            </div>
+            <select id="articleSectionFilter" class="article-section-filter">
+              <option value="all">كل الحالات</option>
+              <option value="Published">منشورة</option>
+              <option value="Draft">مسودات</option>
+              <option value="Pending">في الانتظار</option>
+            </select>
+          </div>
+          <div id="articleManagementList" class="article-management-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="editor-dashboard.js"></script>
+  </body>
+</html>

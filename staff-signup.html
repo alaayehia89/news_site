@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل المديرين والمحررين</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .role-selector {
+        display: flex;
+        gap: 1rem;
+        margin: 1rem 0;
+      }
+      .role-option {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+        transition: all 0.2s;
+      }
+      .role-option:hover {
+        border-color: #1d4ed8;
+        background-color: #eff6ff;
+      }
+      .role-option.selected {
+        border-color: #1d4ed8;
+        background-color: #dbeafe;
+        font-weight: 600;
+      }
+      .role-option input {
+        display: none;
+      }
+      .access-code-field {
+        display: none;
+      }
+      .access-code-field.visible {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="login-card">
+        <aside class="brand-panel">
+          <div class="brand-content">
+            <div class="brand-badge" data-site-logo>A</div>
+            <h1>تسجيل فريق العمل</h1>
+            <p>
+              مساحة مخصصة لتسجيل المديرين والمحررين والكتاب في النظام.
+            </p>
+            <ul class="feature-list">
+              <li>صلاحيات محددة لكل دور</li>
+              <li>لوحة تحكم مخصصة</li>
+              <li>إدارة المحتوى بسهولة</li>
+            </ul>
+          </div>
+        </aside>
+
+        <main class="form-panel">
+          <div class="form-header">
+            <span class="eyebrow">حساب جديد</span>
+            <h2>تسجيل مدير / محرر / كاتب</h2>
+          </div>
+
+          <form id="staffSignupForm" novalidate>
+            <div class="input-group">
+              <label for="name">الاسم الكامل</label>
+              <input id="name" name="name" type="text" placeholder="اسمك الكامل" required />
+              <small class="error-message" id="nameError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="email">البريد الإلكتروني</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+              <small class="error-message" id="emailError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="password">كلمة المرور</label>
+              <div class="password-wrap">
+                <input id="password" name="password" type="password" placeholder="أنشئ كلمة مرور" minlength="6" required />
+                <button type="button" class="toggle-password" aria-label="Show password">عرض</button>
+              </div>
+              <small class="error-message" id="passwordError"></small>
+            </div>
+
+            <div class="input-group">
+              <label for="confirmPassword">تأكيد كلمة المرور</label>
+              <div class="password-wrap">
+                <input id="confirmPassword" name="confirmPassword" type="password" placeholder="أعد كتابة كلمة المرور" required />
+              </div>
+              <small class="error-message" id="confirmPasswordError"></small>
+            </div>
+
+            <div class="input-group">
+              <label>اختر الدور الوظيفي</label>
+              <div class="role-selector">
+                <label class="role-option selected" id="roleAdminOption">
+                  <input type="radio" name="role" value="admin" checked />
+                  <span>👑 مدير</span>
+                  <small>صلاحيات كاملة</small>
+                </label>
+                <label class="role-option" id="roleEditorOption">
+                  <input type="radio" name="role" value="editor" />
+                  <span>✏️ محرر</span>
+                  <small>نشر وتعديل المقالات</small>
+                </label>
+                <label class="role-option" id="roleWriterOption">
+                  <input type="radio" name="role" value="writer" />
+                  <span>📝 كاتب</span>
+                  <small>كتابة المسودات فقط</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group access-code-field" id="accessCodeField">
+              <label for="accessCode">رمز الوصول الخاص</label>
+              <input id="accessCode" name="accessCode" type="password" placeholder="أدخل رمز الوصول" />
+              <small class="error-message" id="accessCodeError"></small>
+              <small class="help-text">يُطلب رمز الوصول للمديرين والمحررين فقط</small>
+            </div>
+
+            <button type="submit" class="primary-btn" id="staffSignupBtn">إنشاء الحساب</button>
+          </form>
+
+          <p class="signup-text">
+            لديك حساب بالفعل؟
+            <a href="index.html" class="link">تسجيل الدخول</a>
+          </p>
+          <p class="signup-text">
+            مستخدم عادي؟
+            <a href="signup.html" class="link">تسجيل مستخدم قارئ</a>
+          </p>
+        </main>
+      </div>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="staff-signup.js"></script>
+  </body>
+</html>
