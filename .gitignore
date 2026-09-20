@@ -1,90 +1,44 @@
 ```
 # Dependencies
 node_modules/
-node_modules/**
-.pnpm-store/
-.yarn/
-.yarn-cache/
-
-# Build outputs
-dist/
-build/
-.next/
-.nuxt/
-public/dist/
-out/
-
-# Environment variables
+.venv/
+venv/
+__pycache__/
+*.pyc
 .env
 .env.local
 .env.*
-!.env.example
 
-# IDE and editor files
+# Build artifacts
+dist/
+build/
+target/
+
+# Logs and temp files
+*.log
+*.tmp
+
+# Editors
 .vscode/
 .idea/
-*.swp
-*.swo
-*~
+
+# OS
 .DS_Store
 Thumbs.db
 
-# Logs
-*.log
-logs/
-log/
-
-# Runtime
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Python specific
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+.Python
+*.so
 
 # Coverage
-coverage/
-.nyc_output/
-.html
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Python related (in case of mixed environment)
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv/
-pip-log.txt
-pip-delete-this-directory.txt
-*.local.py
-.python-version
-.pytest_cache/
-.mypy_cache/
 .coverage
-coverage.xml
+coverage/
 htmlcov/
 
-# TypeScript/JavaScript
-*.tsbuildinfo
-*.js.map
-*.jsx.map
-*.ts.map
-*.tsx.map
-
-# Prisma
-prisma/migrations/
-*.db
-*.db-journal
-
-# Next.js
-.next/
-out/
+# MyPy
+.mypy_cache/
 ```
