@@ -1,0 +1,385 @@
+// مخطط قاعدة البيانات - Prisma Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// نموذج المستخدم
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  username      String    @unique
+  password      String
+  fullName      String?
+  role          Role      @default(EDITOR)
+  avatar        String?
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  articles      Article[]
+  refreshTokens RefreshToken[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// أدوار المستخدمين
+enum Role {
+  ADMIN
+  EDITOR_IN_CHIEF
+  SENIOR_EDITOR
+  EDITOR
+  JOURNALIST
+  TRANSLATOR
+  VIEWER
+}
+
+// جلسات المستخدمين
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+// رموز التحديث
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+// المقالات والأخبار
+model Article {
+  id              String      @id @default(uuid())
+  title           String
+  slug            String      @unique
+  subtitle        String?
+  content         String      @db.Text
+  summary         String?
+  excerpt         String?     @db.Text
+  type            ArticleType @default(NEWS)
+  status          Status      @default(DRAFT)
+  priority        Int         @default(0)
+  isBreaking      Boolean     @default(false)
+  publishedAt     DateTime?
+  scheduledAt     DateTime?
+  views           Int         @default(0)
+  likes           Int         @default(0)
+  shares          Int         @default(0)
+  featuredImage   String?
+  images          String[]
+  videoUrl        String?
+  authorId        String
+  editorId        String?
+  categoryId      String?
+  tags            Tag[]
+  categories      Category[]
+  keywords        Keyword[]
+  relatedArticles Article[]   @relation("RelatedArticles")
+  comments        Comment[]
+  analytics       Analytics[]
+  seo             Seo?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  author          User        @relation(fields: [authorId], references: [id])
+  editor          User?       @relation(fields: [editorId], references: [id])
+  category        Category?   @relation(fields: [categoryId], references: [id])
+
+  @@index([slug])
+  @@index([type])
+  @@index([status])
+  @@index([isBreaking])
+  @@index([publishedAt])
+  @@index([authorId])
+  @@index([categoryId])
+  @@fulltext([title, content, summary])
+}
+
+// أنواع المقالات
+enum ArticleType {
+  NEWS          // خبر عادي
+  BREAKING      // خبر عاجل
+  ANALYSIS      // تحليل سياسي/استراتيجي
+  STUDY         // دراسة
+  REPORT        // تقرير
+  OPINION       // مقال رأي
+  ECONOMIC      // تحليل اقتصادي
+  INTERVIEW     // مقابلة
+  INFOGRAPHIC   // إنفوجرافيك
+  VIDEO         // فيديو
+  LIVE          // بث مباشر
+}
+
+// حالة النشر
+enum Status {
+  DRAFT
+  PENDING_REVIEW
+  SCHEDULED
+  PUBLISHED
+  ARCHIVED
+  REJECTED
+}
+
+// التصنيفات
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  parentId    String?
+  icon        String?
+  color       String?
+  order       Int       @default(0)
+  isActive    Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  parent      Category? @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[] @relation("CategoryHierarchy")
+  articles    Article[]
+
+  @@index([slug])
+  @@index([parentId])
+}
+
+// الكلمات المفتاحية
+model Keyword {
+  id        String    @id @default(uuid())
+  name      String    @unique
+  slug      String    @unique
+  count     Int       @default(0)
+  articles  Article[]
+  createdAt DateTime  @default(now())
+
+  @@index([slug])
+}
+
+// الوسوم
+model Tag {
+  id        String    @id @default(uuid())
+  name      String
+  slug      String    @unique
+  articles  Article[]
+  createdAt DateTime  @default(now())
+
+  @@index([slug])
+}
+
+// التعليقات
+model Comment {
+  id        String   @id @default(uuid())
+  articleId String
+  content   String   @db.Text
+  authorName String?
+  authorEmail String?
+  ipAddress String?
+  status    CommentStatus @default(PENDING)
+  isApproved Boolean @default(false)
+  parentId  String?
+  parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([articleId])
+  @@index([status])
+}
+
+enum CommentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  SPAM
+}
+
+// تحسين محركات البحث
+model Seo {
+  id          String   @id @default(uuid())
+  articleId   String   @unique
+  metaTitle   String?
+  metaDescription String? @db.Text
+  metaKeywords String?
+  ogImage     String?
+  ogTitle     String?
+  ogDescription String? @db.Text
+  twitterCard String?
+  canonicalUrl String?
+  noIndex     Boolean  @default(false)
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId])
+}
+
+// التحليلات والإحصائيات
+model Analytics {
+  id         String   @id @default(uuid())
+  articleId  String
+  date       DateTime @db.Date
+  views      Int      @default(0)
+  uniqueVisitors Int  @default(0)
+  avgTimeOnPage Float @default(0)
+  bounceRate Float    @default(0)
+  source     String?  // organic, social, direct, referral
+  country    String?
+  device     String?  // desktop, mobile, tablet
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, date, source])
+  @@index([articleId])
+  @@index([date])
+}
+
+// إعدادات الموقع
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String   @db.Text
+  type      String   @default("string")
+  group     String   @default("general")
+  isPublic  Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@index([key])
+  @@index([group])
+}
+
+// سجل النشاطات
+model ActivityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  action    String
+  entityType String?
+  entityId  String?
+  details   Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// قوالب الأخبار (للذكاء الاصطناعي)
+model AITemplate {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  template    String   @db.Text
+  model       String   @default("gpt-4")
+  parameters  Json?
+  isActive    Boolean  @default(true)
+  usageCount  Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([name])
+}
+
+// مهام الذكاء الاصطناعي
+model AITask {
+  id        String    @id @default(uuid())
+  type      AITaskType
+  input     String    @db.Text
+  output    String?   @db.Text
+  status    TaskStatus @default(PENDING)
+  priority  Int       @default(5)
+  articleId String?
+  error     String?
+  metadata  Json?
+  createdAt DateTime  @default(now())
+  completedAt DateTime?
+
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+}
+
+enum AITaskType {
+  SUMMARIZE
+  EXTRACT_KEYWORDS
+  CLASSIFY
+  TRANSLATE
+  GENERATE_TITLE
+  SENTIMENT_ANALYSIS
+  FACT_CHECK
+}
+
+enum TaskStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+// الاشتراكات في النشرة البريدية
+model NewsletterSubscription {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  isActive  Boolean  @default(true)
+  categories String[]
+  subscribedAt DateTime @default(now())
+  unsubscribedAt DateTime?
+
+  @@index([email])
+  @@index([isActive])
+}
+
+// الإشعارات
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String?
+  title     String
+  message   String   @db.Text
+  type      NotificationType
+  isRead    Boolean  @default(false)
+  link      String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+enum NotificationType {
+  BREAKING_NEWS
+  NEW_ARTICLE
+  COMMENT_REPLY
+  SYSTEM
+  MAINTENANCE
+}
+
+// مصادر الأخبار (للـ JSON import)
+model NewsSource {
+  id        String   @id @default(uuid())
+  name      String
+  url       String?
+  apiKey    String?
+  isActive  Boolean  @default(true)
+  config    Json?
+  lastSync  DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
