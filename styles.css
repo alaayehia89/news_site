@@ -2644,3 +2644,72 @@ label {
     height: 190px;
   }
 }
+
+/* Role-based visibility */
+.admin-only,
+.editor-only,
+.writer-only {
+  display: none;
+}
+
+/* Article row styling */
+.article-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 1rem;
+}
+
+.article-row:last-child {
+  border-bottom: none;
+}
+
+.article-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* Status badges */
+.status-draft {
+  color: #6b7280;
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.status-pending {
+  color: #d97706;
+  background-color: #fef3c7;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+.status-published {
+  color: #059669;
+  background-color: #d1fae5;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+}
+
+/* Warning button for unpublish */
+.warning-btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.warning-btn:hover {
+  background: linear-gradient(135deg, #b91c1c, #991b1b);
+  transform: translateY(-1px);
+}

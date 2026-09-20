@@ -1113,6 +1113,72 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard.html'));
 });
 
+app.get('/editor-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'editor-dashboard.html'));
+});
+
+app.get('/writer-dashboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'writer-dashboard.html'));
+});
+
+app.post('/api/staff-register', async (req, res) => {
+  const { name, email, password, role } = req.body || {};
+
+  if (!name || !email || !password) {
+    return sendError(res, 400, 'الاسم والبريد الإلكتروني وكلمة المرور مطلوبة.');
+  }
+
+  if (!['admin', 'editor', 'writer'].includes(role)) {
+    return sendError(res, 400, 'الدور الوظيفي غير صالح.');
+  }
+
+  if (password.length < 6) {
+    return sendError(res, 400, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+  }
+
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(String(email).trim())) {
+    return sendError(res, 400, 'يرجى إدخال عنوان بريد إلكتروني صالح.');
+  }
+
+  const trimmedName = String(name).trim();
+  const trimmedEmail = String(email).trim().toLowerCase();
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  db.get('SELECT COUNT(*) AS total FROM users', (countErr, row) => {
+    if (countErr) return sendError(res, 500, 'خطأ في قاعدة البيانات أثناء إنشاء الحساب.');
+    
+    // Only the first user can be admin without invitation
+    if (role === 'admin' && Number(row.total) > 0) {
+      return sendError(res, 403, 'يجب استخدام رمز دعوة المدير لإنشاء حساب مدير جديد.');
+    }
+    
+    db.run(
+      'INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)',
+      [trimmedName, trimmedEmail, passwordHash, role],
+      function insertUser(err) {
+        if (err) {
+          if (err.code === 'SQLITE_CONSTRAINT_UNIQUE') {
+            return sendError(res, 409, 'هذا البريد الإلكتروني مسجل بالفعل.');
+          }
+          return sendError(res, 500, 'خطأ في قاعدة البيانات أثناء إنشاء الحساب.');
+        }
+
+        return res.status(201).json({
+          success: true,
+          message: 'تم تسجيل المستخدم بنجاح.',
+          user: {
+            id: this.lastID,
+            name: trimmedName,
+            email: trimmedEmail,
+            role,
+          },
+        });
+      }
+    );
+  });
+});
+
 app.use((req, res, next) => {
   if (req.path.startsWith('/api/')) {
     return next();

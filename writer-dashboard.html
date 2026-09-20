@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>لوحة الكاتب</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="dashboard-body">
+    <div class="dashboard-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand" data-site-logo>A</div>
+        <nav class="sidebar-nav">
+          <a class="nav-item active" href="#">نظرة عامة</a>
+          <a class="nav-item" href="#write-article">كتابة مقال</a>
+          <a class="nav-item" href="#my-drafts">مسوداتي</a>
+        </nav>
+        <button class="logout-btn" id="logoutBtn">تسجيل الخروج</button>
+      </aside>
+
+      <main class="dashboard-main">
+        <header class="topbar">
+          <div>
+            <p class="topbar-label">لوحة الكاتب</p>
+            <h1 id="welcomeName">مرحباً</h1>
+            <span id="userRole" class="role-badge">كاتب</span>
+          </div>
+          <a href="news-home.html" class="primary-btn small-btn">+ عرض الموقع</a>
+        </header>
+
+        <section class="stats-grid">
+          <article class="stat-card">
+            <span>مسوداتي</span>
+            <strong id="myDraftsCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>في الانتظار</span>
+            <strong id="pendingCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>منشورة</span>
+            <strong id="publishedCount">0</strong>
+          </article>
+          <article class="stat-card">
+            <span>المجموع</span>
+            <strong id="totalCount">0</strong>
+          </article>
+        </section>
+
+        <section id="write-article" class="content-grid">
+          <article class="panel full-width">
+            <div class="panel-header">
+              <h3>كتابة مقال جديد</h3>
+            </div>
+
+            <form id="articleForm" class="dashboard-article-form">
+              <input id="articleTitle" type="text" placeholder="عنوان المقال" required />
+              <input id="articleAuthor" type="text" placeholder="اسم الكاتب" />
+              <input id="articleImage" type="url" placeholder="رابط صورة المقال (اختياري)" />
+              <input id="articleDate" type="date" placeholder="تاريخ النشر" />
+
+              <select id="articleType">
+                <option value="خبر">خبر</option>
+                <option value="تحليل">تحليل</option>
+                <option value="مقال">مقال</option>
+                <option value="تقرير">تقرير</option>
+              </select>
+
+              <select id="articleCategory"></select>
+              <select id="articleRegion"></select>
+              
+              <label class="keyword-field">
+                الكلمات المفتاحية
+                <input id="articleKeywords" type="text" placeholder="سياسة، اقتصاد" />
+              </label>
+              <textarea id="articleSummary" placeholder="ملخص المقال" required></textarea>
+              <textarea id="articleContent" placeholder="نص المقال الكامل" required></textarea>
+
+              <button id="saveArticleBtn" type="submit" class="primary-btn">حفظ كمسودة</button>
+              <button id="submitForReviewBtn" type="button" class="secondary-btn">إرسال للمراجعة</button>
+              <button id="cancelArticleEditBtn" type="button" class="secondary-btn hidden">إلغاء التعديل</button>
+              <p id="articleFormStatus" class="form-status" aria-live="polite"></p>
+            </form>
+          </article>
+        </section>
+
+        <section id="my-drafts" class="panel article-management-panel">
+          <div class="panel-header article-management-header">
+            <div>
+              <p class="topbar-label">مقالاتي</p>
+              <h3>مسوداتي ومقالاتي</h3>
+            </div>
+            <select id="articleSectionFilter" class="article-section-filter">
+              <option value="all">كل الحالات</option>
+              <option value="Draft">مسودات</option>
+              <option value="Pending">في الانتظار</option>
+              <option value="Published">منشورة</option>
+            </select>
+          </div>
+          <div id="articleManagementList" class="article-management-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="site-config.js"></script>
+    <script src="writer-dashboard.js"></script>
+  </body>
+</html>
